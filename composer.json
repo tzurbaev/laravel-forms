@@ -1,0 +1,33 @@
+{
+    "name": "tzurbaev/laravel-forms",
+    "description": "Laravel Forms",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tzurbaev",
+            "email": "zurbaev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "illuminate/support": "5.5.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zurbaev\\Forms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zurbaev\\Forms\\Tests\\": "tests/"
+        },
+        "files": [
+            "tests/Stubs/helpers.php"
+        ]
+    },
+    "minimum-stability": "stable"
+}
