@@ -6,4 +6,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/tzurbaev/laravel-forms/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/tzurbaev/laravel-forms/compare/1.0.0...HEAD
