@@ -10,8 +10,25 @@ abstract class AbstractForm
      * @var array
      */
     protected $validTypes = [
-        'hidden', 'text', 'select', 'checkbox', 'file-upload', 'summernote',
+        'hidden', 'text', 'textarea', 'file', 'select', 'checkbox', 'radio',
     ];
+
+    /**
+     * @var array
+     */
+    protected $typesWithOwnMarkup = [
+        'hidden', 'checkbox',
+    ];
+
+    /**
+     * @var string
+     */
+    protected $defaultFieldType = 'text';
+
+    /**
+     * @var bool
+     */
+    protected $truncatePasswords = true;
 
     /**
      * @var array
@@ -185,7 +202,7 @@ abstract class AbstractForm
      */
     public function fieldShouldUseOwnMarkup(array $field)
     {
-        return in_array($this->fieldType($field), ['hidden', 'checkbox']);
+        return in_array($this->fieldType($field), $this->typesWithOwnMarkup);
     }
 
     /**
@@ -197,7 +214,7 @@ abstract class AbstractForm
      */
     public function fieldType(array $field)
     {
-        return Str::lower($field['type'] ?? 'text');
+        return Str::lower($field['type'] ?? $this->defaultFieldType);
     }
 
     /**
@@ -215,6 +232,34 @@ abstract class AbstractForm
     }
 
     /**
+     * Determines if given field type is 'password'.
+     *
+     * @param array $field
+     *
+     * @return bool
+     */
+    public function isPasswordField(array $field)
+    {
+        return $this->fieldAttributeValue($field, 'type') === 'password';
+    }
+
+    /**
+     * Determines if form should truncate value for given field.
+     *
+     * @param array $field
+     *
+     * @return bool
+     */
+    public function shouldTruncateValue(array $field)
+    {
+        if ($this->isPasswordField($field) && $this->truncatePasswords) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get the field value.
      *
      * @param string $name
@@ -225,7 +270,7 @@ abstract class AbstractForm
      */
     public function fieldValue(string $name, array $field, $default = null)
     {
-        if ($this->fieldAttributeValue($field, 'type') === 'password') {
+        if ($this->shouldTruncateValue($field)) {
             return '';
         }
 
