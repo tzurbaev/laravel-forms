@@ -36,6 +36,7 @@ class ExampleForm extends AbstractForm
                 'value_lookup' => 'photo',
                 'label' => 'Photo',
             ],
+            'mutated_input' => ['label' => 'Mutated'],
         ];
     }
 
@@ -46,6 +47,16 @@ class ExampleForm extends AbstractForm
             'email' => 'john@example.org',
             'password' => 'secret',
             'photo' => 'https://example.org/image.png',
+            'mutated_input' => $this->getMutatedInputValue(),
         ];
+    }
+
+    public function getMutatedInputValue($old = null)
+    {
+        if (is_null($old)) {
+            return 'default value';
+        }
+
+        return 'mutated from old value, old: "'.$old.'"';
     }
 }

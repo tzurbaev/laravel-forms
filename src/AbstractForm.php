@@ -109,6 +109,16 @@ abstract class AbstractForm
     }
 
     /**
+     * Get the cancel button label.
+     *
+     * @return string
+     */
+    public function cancelLabel()
+    {
+        return 'Cancel';
+    }
+
+    /**
      * Get the form option value.
      *
      * @param string $path
@@ -276,8 +286,14 @@ abstract class AbstractForm
 
         $lookupName = $field['value_lookup'] ?? $name;
         $value = array_get($this->values(), $lookupName, $default);
+        $oldValue = old($name);
+        $mutatorMethod = Str::camel('get_'.$name.'_value');
 
-        return old($name, $value);
+        if ($oldValue && method_exists($this, $mutatorMethod)) {
+            return call_user_func([$this, $mutatorMethod], $oldValue);
+        }
+
+        return $oldValue ?? $value;
     }
 
     /**

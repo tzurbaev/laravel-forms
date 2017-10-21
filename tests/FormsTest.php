@@ -17,6 +17,7 @@ class FormsTest extends TestCase
         parent::setUp();
 
         $this->form = new ExampleForm();
+        \OldValuesStorage::flush();
     }
 
     public function testFieldWithoutTypeShouldBeDetectdAsText()
@@ -65,5 +66,15 @@ class FormsTest extends TestCase
         $field = $this->form->getField('photo_file');
 
         $this->assertSame($expected, $this->form->fieldValue('photo_file', $field));
+    }
+
+    public function testFormShouldUseMutatorsWhenPossible()
+    {
+        $field = $this->form->getField('mutated_input');
+
+        $this->assertSame('default value', $this->form->fieldValue('mutated_input', $field));
+
+        \OldValuesStorage::set('mutated_input', 'mutated input');
+        $this->assertSame('mutated from old value, old: "mutated input"', $this->form->fieldValue('mutated_input', $field));
     }
 }
